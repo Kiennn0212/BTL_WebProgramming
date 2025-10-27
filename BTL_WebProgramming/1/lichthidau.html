@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch thi đấu - TicketBall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #EA580C, #DC2626);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #C2410C, #B91C1C);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(234, 88, 12, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #059669, #10B981);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #047857, #059669);
+            transform: translateY(-2px);
+        }
+
+        .navbar-scroll {
+            backdrop-filter: blur(10px);
+            background: rgba(5, 150, 105, 0.95);
+        }
+
+        .match-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .match-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: #10B981;
+        }
+
+        .team-logo {
+            transition: transform 0.3s ease;
+        }
+
+        .match-card:hover .team-logo {
+            transform: scale(1.1);
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #059669, #10B981);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .date-header {
+            background: linear-gradient(135deg, #1F2937, #374151);
+            color: white;
+            position: sticky;
+            top: 80px;
+            z-index: 10;
+        }
+
+        .vs-animation {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="h-full bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 navbar-scroll border-b border-green-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="text-white text-2xl font-bold">
+                            ⚽ <span class="text-yellow-400">Ticket</span>Ball
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="main.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Trang chủ</a>
+                        
+                        <a href="muave.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Mua vé</a>
+                        <a href="#" class="text-yellow-400 px-3 py-2 text-sm font-medium">Lịch thi đấu</a>
+                        <a href="dangnhap.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Tài khoản</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Banner -->
+    <section class="bg-gradient-to-r from-green-600 to-green-700 pt-16 pb-8 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-4">Lịch thi đấu</h1>
+                <p class="text-xl text-green-100 max-w-2xl mx-auto">
+                    Theo dõi lịch thi đấu các giải bóng đá hàng đầu và đặt vé ngay
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="bg-white shadow-lg sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                
+                <!-- League Filter -->
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="filterByLeague('all')" class="filter-btn px-4 py-2 rounded-full font-medium text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 active">
+                        Tất cả giải đấu
+                    </button>
+                    <button onclick="filterByLeague('premier-league')" class="filter-btn px-4 py-2 rounded-full font-medium text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        Premier League
+                    </button>
+                    <button onclick="filterByLeague('champions-league')" class="filter-btn px-4 py-2 rounded-full font-medium text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        Champions League
+                    </button>
+                    <button onclick="filterByLeague('la-liga')" class="filter-btn px-4 py-2 rounded-full font-medium text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        La Liga
+                    </button>
+                </div>
+
+                <!-- Date & Search Filter -->
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <select id="monthFilter" onchange="filterByMonth()" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                        <option value="all">Tất cả tháng</option>
+                        <option value="12" selected>Tháng 12/2024</option>
+                        <option value="1">Tháng 1/2025</option>
+                        <option value="2">Tháng 2/2025</option>
+                        <option value="3">Tháng 3/2025</option>
+                    </select>
+                    
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Tìm đội bóng..." 
+                            class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            oninput="searchTeams()">
+                        <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">24</div>
+                <div class="text-gray-600">Trận đấu tháng này</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">8</div>
+                <div class="text-gray-600">Giải đấu</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <div class="text-3xl font-bold text-orange-600 mb-2">156</div>
+                <div class="text-gray-600">Vé còn lại</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                <div class="text-3xl font-bold text-red-600 mb-2">12</div>
+                <div class="text-gray-600">Trận sắp diễn ra</div>
+            </div>
+        </div>
+
+        <!-- Schedule by Date -->
+        <div id="scheduleContainer">
+            
+            <!-- December 15, 2024 -->
+            <div class="date-section mb-8" data-date="2024-12-15" data-league="premier-league">
+                <div class="date-header rounded-t-xl px-6 py-4 mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold">Chủ nhật, 15 tháng 12, 2024</h2>
+                            <p class="text-gray-300">3 trận đấu</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-300">Premier League</div>
+                            <div class="text-lg font-bold">Vòng 16</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- Match 1 -->
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="manchester-united liverpool">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-red-600 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">Premier League</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-900">21:00</div>
+                                <div class="text-sm text-gray-500">GMT+7</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    MU
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Manchester United</div>
+                                    <div class="text-sm text-gray-500">#3 Premier League</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Liverpool</div>
+                                    <div class="text-sm text-gray-500">#1 Premier League</div>
+                                </div>
+                                <div class="team-logo w-12 h-12 bg-red-800 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    LIV
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Old Trafford</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
+                                        <span class="text-sm text-gray-600">Từ 1,200,000₫</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyTicket('MU vs LIV')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
+                                    Mua vé ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Match 2 -->
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="chelsea arsenal">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-red-600 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">Premier League</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-900">18:30</div>
+                                <div class="text-sm text-gray-500">GMT+7</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="team-logo w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    CHE
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Chelsea</div>
+                                    <div class="text-sm text-gray-500">#5 Premier League</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Arsenal</div>
+                                    <div class="text-sm text-gray-500">#2 Premier League</div>
+                                </div>
+                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    ARS
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Stamford Bridge</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-badge px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">Sắp hết vé</span>
+                                        <span class="text-sm text-gray-600">Từ 1,500,000₫</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyTicket('CHE vs ARS')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
+                                    Mua vé ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Match 3 -->
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="manchester-city tottenham">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-red-600 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">Premier League</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-900">16:00</div>
+                                <div class="text-sm text-gray-500">GMT+7</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="team-logo w-12 h-12 bg-sky-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    MCI
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Manchester City</div>
+                                    <div class="text-sm text-gray-500">#4 Premier League</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Tottenham</div>
+                                    <div class="text-sm text-gray-500">#7 Premier League</div>
+                                </div>
+                                <div class="team-logo w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-700 font-bold text-sm">
+                                    TOT
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Etihad Stadium</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
+                                        <span class="text-sm text-gray-600">Từ 1,100,000₫</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyTicket('MCI vs TOT')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
+                                    Mua vé ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- December 18, 2024 -->
+            <div class="date-section mb-8" data-date="2024-12-18" data-league="champions-league">
+                <div class="date-header rounded-t-xl px-6 py-4 mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold">Thứ tư, 18 tháng 12, 2024</h2>
+                            <p class="text-gray-300">2 trận đấu</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-300">Champions League</div>
+                            <div class="text-lg font-bold">Vòng bảng</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- Champions League Match 1 -->
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="real-madrid barcelona">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-blue-800 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">Champions League</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-900">03:00</div>
+                                <div class="text-sm text-gray-500">GMT+7</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="team-logo w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-700 font-bold text-sm">
+                                    RM
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Real Madrid</div>
+                                    <div class="text-sm text-gray-500">Bảng A</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Barcelona</div>
+                                    <div class="text-sm text-gray-500">Bảng A</div>
+                                </div>
+                                <div class="team-logo w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    BAR
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Santiago Bernabéu</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-badge px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full">Hết vé</span>
+                                        <span class="text-sm text-gray-600">Từ 2,500,000₫</span>
+                                    </div>
+                                </div>
+                                <button disabled class="bg-gray-400 text-white px-6 py-3 rounded-lg font-bold cursor-not-allowed">
+                                    Hết vé
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Champions League Match 2 -->
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="bayern-munich psg">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-blue-800 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">Champions League</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-900">03:00</div>
+                                <div class="text-sm text-gray-500">GMT+7</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    BAY
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Bayern Munich</div>
+                                    <div class="text-sm text-gray-500">Bảng B</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">PSG</div>
+                                    <div class="text-sm text-gray-500">Bảng B</div>
+                                </div>
+                                <div class="team-logo w-12 h-12 bg-blue-800 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    PSG
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Allianz Arena</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
+                                        <span class="text-sm text-gray-600">Từ 2,200,000₫</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyTicket('BAY vs PSG')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
+                                    Mua vé ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- December 22, 2024 -->
+            <div class="date-section mb-8" data-date="2024-12-22" data-league="la-liga">
+                <div class="date-header rounded-t-xl px-6 py-4 mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold">Chủ nhật, 22 tháng 12, 2024</h2>
+                            <p class="text-gray-300">2 trận đấu</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-300">La Liga</div>
+                            <div class="text-lg font-bold">Vòng 17</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- La Liga Match 1 -->
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="atletico-madrid sevilla">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-orange-500 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">La Liga</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-900">22:00</div>
+                                <div class="text-sm text-gray-500">GMT+7</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    ATM
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Atlético Madrid</div>
+                                    <div class="text-sm text-gray-500">#4 La Liga</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Sevilla</div>
+                                    <div class="text-sm text-gray-500">#8 La Liga</div>
+                                </div>
+                                <div class="team-logo w-12 h-12 bg-white border-2 border-red-600 rounded-full flex items-center justify-center text-red-600 font-bold text-sm">
+                                    SEV
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Wanda Metropolitano</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
+                                        <span class="text-sm text-gray-600">Từ 1,800,000₫</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyTicket('ATM vs SEV')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
+                                    Mua vé ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- La Liga Match 2 -->
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="valencia villarreal">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-orange-500 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">La Liga</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-900">19:30</div>
+                                <div class="text-sm text-gray-500">GMT+7</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="team-logo w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    VAL
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Valencia</div>
+                                    <div class="text-sm text-gray-500">#12 La Liga</div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-center">
+                                    <div class="font-bold text-gray-900">Villarreal</div>
+                                    <div class="text-sm text-gray-500">#6 La Liga</div>
+                                </div>
+                                <div class="team-logo w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    VIL
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Mestalla</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-badge px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">Sắp hết vé</span>
+                                        <span class="text-sm text-gray-600">Từ 900,000₫</span>
+                                    </div>
+                                </div>
+                                <button onclick="buyTicket('VAL vs VIL')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
+                                    Mua vé ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="text-center mt-12">
+            <button onclick="loadMoreMatches()" class="btn-secondary text-white px-8 py-4 rounded-lg font-bold text-lg">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    <span>Xem thêm trận đấu</span>
+                </div>
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="text-3xl font-bold mb-4">
+                        ⚽ <span class="text-yellow-400">Ticket</span>Ball
+                    </div>
+                    <p class="text-gray-400 mb-6 max-w-md">
+                        Nền tảng mua vé bóng đá trực tuyến hàng đầu Việt Nam. 
+                        Trải nghiệm những trận đấu đỉnh cao cùng đội bóng yêu thích!
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z.017 0z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Liên kết nhanh</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Trang chủ</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Lịch thi đấu</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Mua vé</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Tin tức</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Hỗ trợ</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Liên hệ</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Câu hỏi thường gặp</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Chính sách</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Điều khoản</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 TicketBall. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentLeague = 'all';
+        let currentMonth = '12';
+
+        // Filter by league
+        function filterByLeague(league) {
+            currentLeague = league;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter matches
+            const dateSections = document.querySelectorAll('.date-section');
+            dateSections.forEach(section => {
+                const sectionLeague = section.getAttribute('data-league');
+                if (league === 'all' || sectionLeague === league) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+            
+            updateStats();
+        }
+
+        // Filter by month
+        function filterByMonth() {
+            const selectedMonth = document.getElementById('monthFilter').value;
+            currentMonth = selectedMonth;
+            
+            const dateSections = document.querySelectorAll('.date-section');
+            dateSections.forEach(section => {
+                const sectionDate = section.getAttribute('data-date');
+                const sectionMonth = new Date(sectionDate).getMonth() + 1;
+                
+                if (selectedMonth === 'all' || sectionMonth.toString() === selectedMonth) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+            
+            updateStats();
+        }
+
+        // Search teams
+        function searchTeams() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const matchCards = document.querySelectorAll('.match-card');
+            
+            matchCards.forEach(card => {
+                const teams = card.getAttribute('data-teams');
+                const teamNames = card.querySelectorAll('.font-bold.text-gray-900');
+                let matchFound = false;
+                
+                teamNames.forEach(name => {
+                    if (name.textContent.toLowerCase().includes(searchTerm)) {
+                        matchFound = true;
+                    }
+                });
+                
+                if (teams.includes(searchTerm) || matchFound || searchTerm === '') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Buy ticket function
+        function buyTicket(matchName) {
+            // Show loading state
+            const button = event.target;
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = `
+                <div class="flex items-center justify-center space-x-2">
+                    <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Đang xử lý...</span>
+                </div>
+            `;
+            button.disabled = true;
+            
+            // Simulate processing
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // Create custom modal instead of alert
+                showTicketModal(matchName);
+            }, 1500);
+        }
+
+        // Show ticket purchase modal
+        function showTicketModal(matchName) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-md mx-4 transform transition-all">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Chuyển hướng đến trang mua vé</h3>
+                        <p class="text-gray-600 mb-6">Bạn sẽ được chuyển đến trang mua vé cho trận đấu: <strong>${matchName}</strong></p>
+                        <div class="flex space-x-4">
+                            <button onclick="closeModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg font-medium transition-colors">
+                                Hủy
+                            </button>
+                            <button onclick="proceedToBuy()" class="flex-1 btn-primary text-white py-3 rounded-lg font-medium">
+                                Tiếp tục
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Close modal functions
+            window.closeModal = () => {
+                document.body.removeChild(modal);
+            };
+            
+            window.proceedToBuy = () => {
+                document.body.removeChild(modal);
+                // Here you would redirect to the actual ticket purchase page
+                console.log('Redirecting to ticket purchase page for:', matchName);
+            };
+            
+            // Close on backdrop click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Load more matches
+        function loadMoreMatches() {
+            const button = event.target;
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Đang tải...</span>
+                </div>
+            `;
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // Show success message
+                const successMsg = document.createElement('div');
+                successMsg.className = 'fixed top-20 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                successMsg.textContent = 'Đã tải thêm 5 trận đấu mới!';
+                document.body.appendChild(successMsg);
+                
+                setTimeout(() => {
+                    document.body.removeChild(successMsg);
+                }, 3000);
+            }, 2000);
+        }
+// chuyển hướng sang trang mua vé
+function showTicketModal(matchName) {
+    Swal.fire({
+        title: 'Chuyển hướng đến trang mua vé',
+        html: `Bạn sẽ được chuyển đến trang mua vé cho trận đấu: <b>${matchName}</b>`,
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'Tiếp tục',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#EA580C',
+        cancelButtonColor: '#6B7280',
+        reverseButtons: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // ✅ Chuyển hướng kèm tham số trận đấu
+            window.location.href = 'muave.html?match=' + encodeURIComponent(matchName);
+        }
+    });
+}
+
+        // Update stats based on current filters
+        function updateStats() {
+            const visibleSections = document.querySelectorAll('.date-section[style="display: block"], .date-section:not([style])');
+            const visibleMatches = Array.from(visibleSections).reduce((total, section) => {
+                return total + section.querySelectorAll('.match-card').length;
+            }, 0);
+            
+            // Update stats display (you can customize this based on your needs)
+            console.log(`Showing ${visibleMatches} matches for ${currentLeague} league in month ${currentMonth}`);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+        });
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7f773d367096c',t:'MTc2MDQ1NDIzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

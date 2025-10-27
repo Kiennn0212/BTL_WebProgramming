@@ -1,0 +1,391 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mua vé Man United vs Liverpool - TicketBall</title>
+    <link rel="stylesheet" href="~/css/MuaVe.css" asp-append-version="true" />
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 navbar-scroll border-b border-green-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="text-white text-2xl font-bold">
+                            ⚽ <span class="text-yellow-400">Ticket</span>Ball
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="main.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Trang chủ</a>
+
+                        <a href="#" class="text-yellow-400 px-3 py-2 text-sm font-medium">Mua vé</a>
+                        <a href="lichthidau.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Lịch thi đấu</a>
+                        <a href="lienhe.html" class="text-white hover:text-yellow-400 px-3 py-2 text-sm font-medium transition-colors">Liên hệ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero-bg pt-16 h-96 flex items-center justify-center text-center text-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex items-center justify-center space-x-8 mb-6">
+                <div class="text-center"></div>
+                <div class="text-center"></div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-2 md:space-y-0 md:space-x-8 text-lg">
+                <div class="flex items-center space-x-2">
+                    <!-- Bổ sung thẻ SVG mở -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Ticket Selection -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Chọn loại vé</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- VIP Ticket -->
+                        <div class="ticket-card bg-white rounded-lg p-6 border cursor-pointer" onclick="selectTicket('vip')">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">VIP</h3>
+                                    <p class="text-sm text-gray-600">Khu vực VIP - Tầng 2</p>
+                                </div>
+                                <div class="w-6 h-6 bg-yellow-500 rounded-full"></div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="text-2xl font-bold text-orange-600">2,500,000₫</div>
+                                <p class="text-sm text-green-600">Còn lại: 45 vé</p>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-1 mb-4">
+                                <li>✓ Chỗ ngồi tốt nhất</li>
+                                <li>✓ Dịch vụ ăn uống miễn phí</li>
+                                <li>✓ Phòng chờ VIP</li>
+                                <li>✓ Bãi đỗ xe ưu tiên</li>
+                            </ul>
+                            <button class="w-full btn-secondary text-white py-2 rounded-lg font-medium">
+                                Chọn VIP
+                            </button>
+                        </div>
+
+                        <!-- Standard Ticket -->
+                        <div class="ticket-card bg-white rounded-lg p-6 border cursor-pointer" onclick="selectTicket('standard')">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">Standard</h3>
+                                    <p class="text-sm text-gray-600">Khán đài chính - Tầng 1</p>
+                                </div>
+                                <div class="w-6 h-6 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="text-2xl font-bold text-orange-600">1,200,000₫</div>
+                                <p class="text-sm text-green-600">Còn lại: 156 vé</p>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-1 mb-4">
+                                <li>✓ Tầm nhìn tốt</li>
+                                <li>✓ Ghế có lưng tựa</li>
+                                <li>✓ Khu vực ăn uống gần</li>
+                                <li>✓ Toilet tiện lợi</li>
+                            </ul>
+                            <button class="w-full btn-secondary text-white py-2 rounded-lg font-medium">
+                                Chọn Standard
+                            </button>
+                        </div>
+
+                        <!-- Khán đài A -->
+                        <div class="ticket-card bg-white rounded-lg p-6 border cursor-pointer" onclick="selectTicket('tribune-a')">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">Khán đài A</h3>
+                                    <p class="text-sm text-gray-600">Phía sau khung thành</p>
+                                </div>
+                                <div class="w-6 h-6 bg-blue-500 rounded-full"></div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="text-2xl font-bold text-orange-600">800,000₫</div>
+                                <p class="text-sm text-green-600">Còn lại: 234 vé</p>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-1 mb-4">
+                                <li>✓ Không khí sôi động</li>
+                                <li>✓ Gần khu vực cổ động viên</li>
+                                <li>✓ Giá hợp lý</li>
+                                <li>✓ Dễ dàng di chuyển</li>
+                            </ul>
+                            <button class="w-full btn-secondary text-white py-2 rounded-lg font-medium">
+                                Chọn Khán đài A
+                            </button>
+                        </div>
+
+                        <!-- Khán đài B -->
+                        <div class="ticket-card bg-white rounded-lg p-6 border cursor-pointer" onclick="selectTicket('tribune-b')">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">Khán đài B</h3>
+                                    <p class="text-sm text-gray-600">Bên hông sân</p>
+                                </div>
+                                <div class="w-6 h-6 bg-purple-500 rounded-full"></div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="text-2xl font-bold text-orange-600">600,000₫</div>
+                                <p class="text-sm text-green-600">Còn lại: 189 vé</p>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-1 mb-4">
+                                <li>✓ Tầm nhìn toàn cảnh</li>
+                                <li>✓ Giá phải chăng</li>
+                                <li>✓ Phù hợp gia đình</li>
+                                <li>✓ An toàn thoải mái</li>
+                            </ul>
+                            <button class="w-full btn-secondary text-white py-2 rounded-lg font-medium">
+                                Chọn Khán đài B
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stadium Map -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Sơ đồ sân vận động</h2>
+
+                    <div class="relative bg-green-100 rounded-lg p-6">
+                        <!-- Stadium Layout -->
+                        <div class="text-center mb-4">
+                            <div class="bg-green-600 text-white py-2 px-4 rounded-lg inline-block text-sm font-medium">
+                                SÂN BÓNG
+                            </div>
+                        </div>
+
+                        <!-- North Stand (VIP) -->
+                        <div class="stadium-section bg-yellow-100 mb-4">
+                            <div class="text-center text-sm font-medium text-yellow-800 mb-2">KHÁN ĐÀI BẮC - VIP</div>
+                            <div class="flex justify-center">
+                                <div class="grid grid-cols-20 gap-1">
+                                    <!-- VIP Seats -->
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip occupied"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip occupied"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip occupied"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip occupied"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat vip available" onclick="toggleSeat(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- West Stand (Standard) -->
+                        <div class="flex justify-between mb-4">
+                            <div class="stadium-section bg-green-100 w-20">
+                                <div class="text-center text-xs font-medium text-green-800 mb-2 transform -rotate-90 mt-8">TÂY - STANDARD</div>
+                                <div class="flex flex-col items-center space-y-1">
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat occupied"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat occupied"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                </div>
+                            </div>
+
+                            <!-- Field -->
+                            <div class="flex-1 mx-4 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">
+                                OLD TRAFFORD
+                            </div>
+
+                            <!-- East Stand (Standard) -->
+                            <div class="stadium-section bg-green-100 w-20">
+                                <div class="text-center text-xs font-medium text-green-800 mb-2 transform rotate-90 mt-8">ĐÔNG - STANDARD</div>
+                                <div class="flex flex-col items-center space-y-1">
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat occupied"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat occupied"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    <div class="seat available" onclick="toggleSeat(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- South Stand (Tribune A & B) -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="stadium-section bg-blue-100">
+                                <div class="text-center text-sm font-medium text-blue-800 mb-2">KHÁN ĐÀI A</div>
+                                <div class="flex justify-center">
+                                    <div class="grid grid-cols-10 gap-1">
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat occupied"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat occupied"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stadium-section bg-purple-100">
+                                <div class="text-center text-sm font-medium text-purple-800 mb-2">KHÁN ĐÀI B</div>
+                                <div class="flex justify-center">
+                                    <div class="grid grid-cols-10 gap-1">
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat occupied"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat occupied"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                        <div class="seat available" onclick="toggleSeat(this)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="flex justify-center space-x-6 mt-6 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-green-500 rounded"></div>
+                                <span>Còn trống</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-red-500 rounded"></div>
+                                <span>Đã bán</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                                <span>Đã chọn</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-yellow-500 rounded"></div>
+                                <span>VIP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6">Thông tin đặt vé</h2>
+
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Trận đấu:</span>
+                            <span class="font-medium">MU vs Liverpool</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Ngày giờ:</span>
+                            <span class="font-medium">15/12 - 21:00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Sân:</span>
+                            <span class="font-medium">Old Trafford</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-4 mb-6">
+                        <div id="selectedTickets" class="space-y-3">
+                            <p class="text-gray-500 text-center py-4">Chưa chọn vé nào</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-4 mb-6">
+                        <div class="flex justify-between text-lg font-bold">
+                            <span>Tổng cộng:</span>
+                            <span id="totalPrice" class="text-orange-600">0₫</span>
+                        </div>
+                    </div>
+
+                    <button id="buyButton" class="w-full btn-primary text-white py-3 rounded-lg font-bold text-lg mb-4 opacity-50 cursor-not-allowed" disabled>
+                        Mua ngay
+                    </button>
+
+                    <div class="text-xs text-gray-500 space-y-1">
+                        <p>• Vé đã mua không được hoàn trả</p>
+                        <p>• Vui lòng mang theo CMND khi vào sân</p>
+                        <p>• Cổng mở 2 tiếng trước giờ thi đấu</p>
+                    </div>
+                </div>
+
+                <!-- Match Info -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mt-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Thông tin trận đấu</h3>
+
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium text-gray-900">Quy định vé:</h4>
+                            <ul class="text-gray-600 mt-1 space-y-1">
+                                <li>• Một vé cho một người</li>
+                                <li>• Trẻ em dưới 3 tuổi miễn phí (ngồi cùng người lớn)</li>
+                                <li>• Không mang đồ uống có cồn</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium text-gray-900">Lưu ý khi vào sân:</h4>
+                            <ul class="text-gray-600 mt-1 space-y-1">
+                                <li>• Kiểm tra an ninh nghiêm ngặt</li>
+                                <li>• Không mang pháo sáng, vũ khí</li>
+                                <li>• Đến sớm để tránh ùn tắc</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    ⚽ <span class="text-yellow-400">Ticket</span>Ball
+                </div>
+                <p class="text-gray-400">&copy; 2024 TicketBall. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    }

@@ -1,0 +1,89 @@
+﻿body {
+    box-sizing: border-box;
+}
+
+.hero-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23228B22" width="1200" height="400"/><rect fill="%23FFFFFF" x="0" y="180" width="1200" height="40" opacity="0.1"/><circle fill="%23FFFFFF" cx="600" cy="200" r="60" opacity="0.1"/><rect fill="%23FFFFFF" x="580" y="0" width="40" height="400" opacity="0.1"/><rect fill="%23FFFFFF" x="100" y="50" width="200" height="100" rx="10" opacity="0.2"/><rect fill="%23FFFFFF" x="900" y="50" width="200" height="100" rx="10" opacity="0.2"/><rect fill="%23FFFFFF" x="100" y="250" width="200" height="100" rx="10" opacity="0.2"/><rect fill="%23FFFFFF" x="900" y="250" width="200" height="100" rx="10" opacity="0.2"/></svg>');
+    background-size: cover;
+    background-position: center;
+}
+
+.ticket-card {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+    .ticket-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .ticket-card.selected {
+        border-color: #059669;
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    }
+
+.btn-primary {
+    background: linear-gradient(135deg, #EA580C, #DC2626);
+    transition: all 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #C2410C, #B91C1C);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(234, 88, 12, 0.3);
+    }
+
+.btn-secondary {
+    background: linear-gradient(135deg, #059669, #10B981);
+    transition: all 0.3s ease;
+}
+
+    .btn-secondary:hover {
+        background: linear-gradient(135deg, #047857, #059669);
+        transform: translateY(-2px);
+    }
+
+.navbar-scroll {
+    backdrop-filter: blur(10px);
+    background: rgba(5, 150, 105, 0.95);
+}
+
+.seat {
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+    .seat.available {
+        background: #10B981;
+    }
+
+    .seat.occupied {
+        background: #EF4444;
+        cursor: not-allowed;
+    }
+
+    .seat.vip {
+        background: #F59E0B;
+    }
+
+    .seat.selected {
+        background: #3B82F6;
+        transform: scale(1.2);
+    }
+
+.stadium-section {
+    border: 2px solid #059669;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+}

@@ -1,0 +1,35 @@
+﻿body {
+    box-sizing: border-box;
+}
+
+.hero-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23228B22" width="1200" height="600"/><circle fill="%23FFFFFF" cx="600" cy="300" r="80" opacity="0.1"/><rect fill="%23FFFFFF" x="580" y="0" width="40" height="600" opacity="0.1"/><rect fill="%23FFFFFF" x="0" y="280" width="1200" height="40" opacity="0.1"/></svg>');
+    background-size: cover;
+    background-position: center;
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+    .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+.btn-primary {
+    background: linear-gradient(135deg, #FF6B35, #F7931E);
+    transition: all 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #E55A2B, #E8851A);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+    }
+
+.navbar-scroll {
+    backdrop-filter: blur(10px);
+    background: rgba(34, 139, 34, 0.95);
+}
+
