@@ -16,7 +16,7 @@ namespace BTL_WebProgramming.Models
         public SanVanDong SanVanDong { get; set; }
 
         // Quan hệ 1-n: Một trận có nhiều vé
-        public ICollection<Ve> Ve { get; set; }
+        public ICollection<Ve>? Ve { get; set; }
 
     }
 }

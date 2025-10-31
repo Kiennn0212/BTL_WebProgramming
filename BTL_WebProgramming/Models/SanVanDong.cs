@@ -12,7 +12,7 @@ namespace BTL_WebProgramming.Models
         public int SucChua { get; set; }
 
         // Quan hệ 1-n: Một sân vận động có nhiều trận đấu
-        public ICollection<TranDau> TranDau { get; set; }
+        public ICollection<TranDau>? TranDau { get; set; }
 
     }
 }
