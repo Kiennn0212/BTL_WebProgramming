@@ -12,8 +12,8 @@ namespace BTL_WebProgramming.Models
         public decimal DonGia { get; set; }
 
         // Quan hệ n-1
-        public HoaDon HoaDon { get; set; }
-        public Ve Ve { get; set; }
+        public HoaDon? HoaDon { get; set; }
+        public Ve? Ve { get; set; }
 
     }
 }

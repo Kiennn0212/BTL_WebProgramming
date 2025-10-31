@@ -16,7 +16,7 @@ namespace BTL_WebProgramming.Models
         public VaiTro VaiTro { get; set; }
 
         // Quan hệ 1-n
-        public ICollection<HoaDon> HoaDon { get; set; }
+        public ICollection<HoaDon> ? HoaDon { get; set; }
     }
 
 

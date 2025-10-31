@@ -10,7 +10,7 @@ namespace BTL_WebProgramming.Models
         public string TenVaiTro { get; set; }
 
         // 1 vai trò có nhiều người dùng
-        public ICollection<NguoiDung> NguoiDung { get; set; }
+        public ICollection<NguoiDung> ? NguoiDung { get; set; }
     }
 
 
