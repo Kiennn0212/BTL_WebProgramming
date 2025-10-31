@@ -7,6 +7,21 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:DB",
       "dynamicId": null
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MyDB",
+      "dynamicId": null
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MyDb1",
+      "dynamicId": null
+    },
+    "mssql4": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MyDb2",
+      "dynamicId": null
     }
   }
 }

@@ -8,6 +8,24 @@
       "type": "mssql.onprem",
       "connectionId": "ConnectionStrings:DB",
       "dynamicId": null
+    },
+    "mssql2": {
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:MyDB",
+      "dynamicId": null
+    },
+    "mssql3": {
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:MyDb1",
+      "dynamicId": null
+    },
+    "mssql4": {
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:MyDb2",
+      "dynamicId": null
     }
   }
 }

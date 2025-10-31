@@ -1,7 +1,7 @@
 ﻿using BTL_WebProgramming.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using BTL_WebProgramming.Models; 
+using BTL_WebProgramming.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDb")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDb2")));
 
 var app = builder.Build();
 
