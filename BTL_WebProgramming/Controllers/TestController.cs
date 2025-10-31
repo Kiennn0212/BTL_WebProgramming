@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BTL_WebProgramming.Models;
+using BTL_WebProgramming.Data;
 
 namespace BTL_WebProgramming.Controllers
 {

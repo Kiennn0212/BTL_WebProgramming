@@ -1,8 +1,11 @@
-﻿namespace BTL_WebProgramming.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BTL_WebProgramming.Models
 {
 
     public class HoaDon
     {
+        [Key]
         public int MaHoaDon { get; set; }
         public int MaNguoiDung { get; set; }
         public DateTime NgayLap { get; set; }
