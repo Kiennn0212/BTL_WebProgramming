@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Trang quản trị - TicketBall";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="bg-green-700 text-white p-4 text-center text-2xl font-bold">
+        ⚙️ TRANG QUẢN TRỊ TICKETBALL
+    </div>
+
+    <div class="flex">
+        <!-- Menu bên trái -->
+        <nav class="w-1/5 bg-gray-900 text-white min-h-screen p-4">
+            <h3 class="text-lg font-semibold mb-4">Danh mục</h3>
+            <ul class="space-y-2">
+                <li><a href="/Admin/AdminHome" class="hover:text-yellow-400">🏠 Trang chủ</a></li>
+                <li><a href="/Admin/TranDau" class="hover:text-yellow-400">⚽ Quản lý trận đấu</a></li>
+                <li><a href="/Admin/SanVanDong" class="hover:text-yellow-400">🏟 Quản lý sân vận động</a></li>
+                <li><a href="/Admin/NguoiDung" class="hover:text-yellow-400">👤 Người dùng</a></li>
+                <li><a href="/Admin/HoaDon" class="hover:text-yellow-400">💰 Hóa đơn</a></li>
+            </ul>
+        </nav>
+
+        <!-- Nội dung chính -->
+        <main class="flex-1 p-8">
+            <h1 class="text-2xl font-bold text-green-700 mb-4">Chào mừng Admin!</h1>
+            <p>Đây là trang quản trị hệ thống TicketBall.</p>
+            <p>Bạn có thể quản lý thông tin các trận đấu, vé, hóa đơn, và người dùng tại đây.</p>
+        </main>
+    </div>
+</body>
+</html>

@@ -5,7 +5,7 @@ using BTL_WebProgramming.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddSession();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyDBContext>(options =>
@@ -20,6 +20,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.MapControllerRoute(
+    name: "Admin",
+    pattern: "{area:exists}/{controller=AdminHome}/{action=Index}/{id?}");
 
 app.UseHttpsRedirection();
 app.UseRouting();
@@ -33,5 +36,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Main}/{id?}")
     .WithStaticAssets();
 
+app.UseSession();
 
 app.Run();
