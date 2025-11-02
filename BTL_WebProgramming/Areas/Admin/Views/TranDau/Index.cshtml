@@ -1,0 +1,105 @@
+﻿@model System.Data.DataTable
+@{
+    ViewData["Title"] = "Quản lý Trận đấu";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f3f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #006400;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        a.add-btn {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+        a.add-btn:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        thead {
+            background: #006400;
+            color: white;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        tr:hover {
+            background: #f2f2f2;
+        }
+        .delete-link {
+            color: #d9534f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .delete-link:hover {
+            text-decoration: underline;
+            color: #b52b27;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>⚽ Quản lý Trận đấu</h2>
+        <a href="/Admin/TranDau/Them" class="add-btn">+ Thêm Trận đấu</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th>Đội chủ nhà</th>
+                    <th>Đội khách</th>
+                    <th>Ngày thi đấu</th>
+                    <th>Sân vận động</th>
+                    <th>Giá vé</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <tr>
+                        <td>@row["MaTranDau"]</td>
+                        <td>@row["DoiChuNha"]</td>
+                        <td>@row["DoiKhach"]</td>
+                        <td>@Convert.ToDateTime(row["NgayThiDau"]).ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@row["MaSVD"]</td>
+                        <td>@String.Format("{0:#,0} đ", row["GiaVe"])</td>
+                        <td><a href="/Admin/TranDau/Xoa/@row["MaTranDau"]" class="delete-link">Xóa</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

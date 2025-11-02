@@ -22,6 +22,16 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:MyDb2",
       "dynamicId": null
+    },
+    "mssql5": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MyDb3",
+      "dynamicId": null
+    },
+    "mssql6": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MyDb4",
+      "dynamicId": null
     }
   }
 }

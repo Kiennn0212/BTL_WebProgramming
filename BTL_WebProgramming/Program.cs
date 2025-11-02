@@ -9,7 +9,7 @@ builder.Services.AddSession();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDb2")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDb4")));
 
 var app = builder.Build();
 
