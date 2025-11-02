@@ -13,6 +13,22 @@ namespace BTL_WebProgramming.Controllers
         {
             return View();
         }
+        public IActionResult TestConnection()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    ViewBag.Message = "✅ Kết nối thành công đến SQL Server!";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "❌ Lỗi kết nối: " + ex.Message;
+                }
+            }
+            return Content(ViewBag.Message);
+        }
 
         [HttpPost]
         public IActionResult DangNhap(string email, string matkhau)
@@ -35,7 +51,7 @@ namespace BTL_WebProgramming.Controllers
                     if (reader["VaiTro"].ToString() == "QuanTri")
                         return RedirectToAction("Index", "AdminHome", new { area = "Admin" });
                     else
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("DangNhap", "Home");
                 }
                 else
                 {

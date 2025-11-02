@@ -1,39 +1,165 @@
 ﻿@{
-    ViewData["Title"] = "Trang quản trị - TicketBall";
+    ViewData["Title"] = "Trang quản trị TicketBall";
+    Layout = null;
 }
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f6fa;
+            color: #333;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* ==== SIDEBAR ==== */
+        .sidebar {
+            width: 250px;
+            background-color: #0a1d3b;
+            color: white;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+            .sidebar h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #00d26a;
+                letter-spacing: 1px;
+            }
+
+            .sidebar ul {
+                list-style: none;
+            }
+
+                .sidebar ul li {
+                    padding: 12px 25px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    transition: 0.3s;
+                }
+
+                    .sidebar ul li:hover {
+                        background-color: #14395f;
+                    }
+
+                    .sidebar ul li i {
+                        margin-right: 10px;
+                    }
+
+        .logout {
+            background-color: #d9534f;
+            text-align: center;
+            padding: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border-top: 1px solid #2f2f2f;
+        }
+
+            .logout:hover {
+                background-color: #c9302c;
+            }
+
+        /* ==== HEADER ==== */
+        header {
+            background-color: #007e33;
+            color: white;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* ==== CONTENT ==== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .welcome-box {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+
+            .welcome-box h1 {
+                color: #006400;
+                margin-bottom: 15px;
+            }
+
+            .welcome-box p {
+                font-size: 16px;
+                color: #555;
+                line-height: 1.6;
+            }
+
+        /* ==== ICONS ==== */
+        .icon {
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-100">
-    <div class="bg-green-700 text-white p-4 text-center text-2xl font-bold">
-        ⚙️ TRANG QUẢN TRỊ TICKETBALL
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div>
+            <h2><i class="fa-solid fa-gear"></i> Admin Panel</h2>
+            <ul>
+                <li onclick="location.href='/Admin/AdminHome'"><i class="fa-solid fa-house"></i> Trang chủ</li>
+                <li onclick="location.href='/Admin/TranDau'"><i class="fa-solid fa-futbol"></i> Quản lý trận đấu</li>
+                <li onclick="location.href='/Admin/SanVanDong'"><i class="fa-solid fa-building-columns"></i> Quản lý sân vận động</li>
+                <li onclick="location.href='/Admin/NguoiDung'"><i class="fa-solid fa-user-group"></i> Người dùng</li>
+                <li onclick="location.href='/Admin/HoaDon'"><i class="fa-solid fa-file-invoice-dollar"></i> Hóa đơn</li>
+            </ul>
+        </div>
+        <div class="logout" onclick="location.href='/Auth/DangNhap'">
+            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+        </div>
     </div>
 
-    <div class="flex">
-        <!-- Menu bên trái -->
-        <nav class="w-1/5 bg-gray-900 text-white min-h-screen p-4">
-            <h3 class="text-lg font-semibold mb-4">Danh mục</h3>
-            <ul class="space-y-2">
-                <li><a href="/Admin/AdminHome" class="hover:text-yellow-400">🏠 Trang chủ</a></li>
-                <li><a href="/Admin/TranDau" class="hover:text-yellow-400">⚽ Quản lý trận đấu</a></li>
-                <li><a href="/Admin/SanVanDong" class="hover:text-yellow-400">🏟 Quản lý sân vận động</a></li>
-                <li><a href="/Admin/NguoiDung" class="hover:text-yellow-400">👤 Người dùng</a></li>
-                <li><a href="/Admin/HoaDon" class="hover:text-yellow-400">💰 Hóa đơn</a></li>
-            </ul>
-        </nav>
-
-        <!-- Nội dung chính -->
-        <main class="flex-1 p-8">
-            <h1 class="text-2xl font-bold text-green-700 mb-4">Chào mừng Admin!</h1>
-            <p>Đây là trang quản trị hệ thống TicketBall.</p>
-            <p>Bạn có thể quản lý thông tin các trận đấu, vé, hóa đơn, và người dùng tại đây.</p>
-        </main>
+    <!-- Main -->
+    <div class="main-content">
+        <header>⚙️ TRANG QUẢN TRỊ TICKETBALL</header>
+        <div class="content-area">
+            <div class="welcome-box">
+                <h1>👋 Chào mừng Admin!</h1>
+                <p>
+                    Đây là trang quản trị hệ thống <strong>TicketBall</strong>.<br />
+                    Bạn có thể quản lý thông tin các <strong>trận đấu</strong>, <strong>vé</strong>, <strong>người dùng</strong> và <strong>hóa đơn</strong> tại đây.<br /><br />
+                    Chúc bạn một ngày làm việc hiệu quả! ⚽💼
+                </p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
