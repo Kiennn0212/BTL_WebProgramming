@@ -1,0 +1,28 @@
+﻿@model System.Data.DataRow
+@{
+    ViewData["Title"] = "Chi tiết người dùng";
+}
+
+<div class="p-6 bg-gray-50 min-h-screen">
+    <h2 class="text-3xl font-bold text-green-700 mb-6">🔍 Thông tin người dùng</h2>
+
+    <div class="bg-white shadow-lg rounded-2xl p-6 w-[500px]">
+        <p><strong>Mã người dùng:</strong> @Model["MaNguoiDung"]</p>
+        <p><strong>Họ tên:</strong> @Model["HoTen"]</p>
+        <p><strong>Email:</strong> @Model["Email"]</p>
+        <p><strong>Mật khẩu:</strong> @Model["MatKhau"]</p>
+        <p>
+            <strong>Vai trò:</strong>
+            <span class="px-3 py-1 rounded-full text-white @(Model["VaiTro"].ToString() == "QuanTri" ? "bg-red-600" : "bg-blue-600")">
+                @Model["VaiTro"]
+            </span>
+        </p>
+
+        <div class="mt-6 flex gap-3">
+            <a asp-action="Sua" asp-route-id="@Model["MaNguoiDung"]"
+               class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition">✏️ Sửa</a>
+            <a asp-action="Index"
+               class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition">⬅️ Quay lại</a>
+        </div>
+    </div>
+</div>
