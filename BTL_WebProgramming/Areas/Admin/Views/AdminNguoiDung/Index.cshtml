@@ -1,0 +1,71 @@
+﻿@model System.Data.DataTable
+@{
+    ViewData["Title"] = "Quản lý Người dùng";
+}
+
+<div class="p-6 bg-gray-50 min-h-screen">
+    <!-- Tiêu đề -->
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-green-700 flex items-center gap-2">
+            👤 Quản lý Người dùng
+        </h2>
+
+        <a asp-action="Them" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition">
+            ➕ Thêm người dùng
+        </a>
+    </div>
+
+    <!-- Bảng -->
+    <div class="overflow-x-auto bg-white shadow-xl rounded-2xl border border-gray-200">
+        <table class="min-w-full text-sm text-gray-700">
+            <thead class="bg-green-700 text-white text-left">
+                <tr>
+                    <th class="py-3 px-5 rounded-tl-2xl">Mã ND</th>
+                    <th class="py-3 px-5">Họ tên</th>
+                    <th class="py-3 px-5">Email</th>
+                    <th class="py-3 px-5">Vai trò</th>
+                    <th class="py-3 px-5 text-center rounded-tr-2xl">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <tr class="border-b hover:bg-green-50 transition duration-200">
+                        <td class="py-3 px-5 font-semibold">@row["MaNguoiDung"]</td>
+                        <td class="py-3 px-5">@row["HoTen"]</td>
+                        <td class="py-3 px-5">@row["Email"]</td>
+                        <td class="py-3 px-5">
+                            @if (row["VaiTro"].ToString() == "QuanTri")
+                            {
+                                <span class="text-red-600 font-semibold">Quản trị</span>
+                            }
+                            else
+                            {
+                                <span class="text-blue-600 font-semibold">Khách hàng</span>
+                            }
+                        </td>
+                        <td class="py-3 px-5 text-center">
+                            <div class="flex justify-center gap-3">
+                                <a asp-action="Sua" asp-route-id="@row["MaNguoiDung"]"
+                                   class="text-yellow-600 hover:underline">✏️ Sửa</a>
+                                <a asp-action="ChiTiet" asp-route-id="@row["MaNguoiDung"]"
+                                   class="text-blue-600 hover:underline">🔍 Xem</a>
+                                <a asp-action="Xoa" asp-route-id="@row["MaNguoiDung"]"
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này không?');"
+                                   class="text-red-600 hover:underline font-semibold">🗑️ Xóa</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tổng số người dùng -->
+    <div class="mt-4 text-right text-gray-600 italic">
+        Tổng số người dùng: <span class="font-bold">@Model.Rows.Count</span>
+    </div>
+</div>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
