@@ -222,45 +222,31 @@
         </div>
 
         <!-- Schedule by Date -->
-        <div id="scheduleContainer">
-
-            <!-- December 15, 2024 -->
-            <div class="date-section mb-8" data-date="2024-12-15" data-league="premier-league">
-                <div class="date-header rounded-t-xl px-6 py-4 mb-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2 class="text-2xl font-bold">Chủ nhật, 15 tháng 12, 2024</h2>
-                            <p class="text-gray-300">3 trận đấu</p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-300">Premier League</div>
-                            <div class="text-lg font-bold">Vòng 16</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calendar-grid">
-                    <!-- Match 1 -->
-                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="manchester-united liverpool">
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <div class="match-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl" data-teams="@row["DoiChuNha"] @row["DoiKhach"]">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 bg-red-600 rounded-full"></div>
-                                <span class="text-sm font-medium text-gray-600">Premier League</span>
+                                <div class="w-6 h-6 bg-green-600 rounded-full"></div>
+                                <span class="text-sm font-medium text-gray-600">Giải đấu quốc nội</span>
                             </div>
                             <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-900">21:00</div>
-                                <div class="text-sm text-gray-500">GMT+7</div>
+                                <div class="text-2xl font-bold text-gray-900">
+                                    @(((DateTime)row["NgayThiDau"]).ToString("HH:mm"))
+                                </div>
+                                <div class="text-sm text-gray-500">@(((DateTime)row["NgayThiDau"]).ToString("dd/MM/yyyy"))</div>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center space-x-4">
-                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    MU
+                                <div class="team-logo w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    @(row["DoiChuNha"].ToString().Substring(0, Math.Min(3, row["DoiChuNha"].ToString().Length)).ToUpper())
                                 </div>
                                 <div class="text-center">
-                                    <div class="font-bold text-gray-900">Manchester United</div>
-                                    <div class="text-sm text-gray-500">#3 Premier League</div>
+                                    <div class="font-bold text-gray-900">@row["DoiChuNha"]</div>
                                 </div>
                             </div>
 
@@ -268,11 +254,10 @@
 
                             <div class="flex items-center space-x-4">
                                 <div class="text-center">
-                                    <div class="font-bold text-gray-900">Liverpool</div>
-                                    <div class="text-sm text-gray-500">#1 Premier League</div>
+                                    <div class="font-bold text-gray-900">@row["DoiKhach"]</div>
                                 </div>
-                                <div class="team-logo w-12 h-12 bg-red-800 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    LIV
+                                <div class="team-logo w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    @(row["DoiKhach"].ToString().Substring(0, Math.Min(3, row["DoiKhach"].ToString().Length)).ToUpper())
                                 </div>
                             </div>
                         </div>
@@ -282,415 +267,28 @@
                                 <div>
                                     <div class="flex items-center space-x-2 mb-1">
                                         <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
-                                        <span class="text-sm font-medium text-gray-700">Old Trafford</span>
+                                        <span class="text-sm font-medium text-gray-700">Sân: @row["MaSVD"]</span>
                                     </div>
                                     <div class="flex items-center space-x-4">
                                         <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
-                                        <span class="text-sm text-gray-600">Từ 1,200,000₫</span>
+                                        <span class="text-sm text-gray-600">@String.Format("{0:N0}₫", row["GiaVe"])</span>
                                     </div>
                                 </div>
-                                <button onclick="buyTicket('MU vs LIV')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
+                                <button onclick="showTicketModal('@row["DoiChuNha"] vs @row["DoiKhach"]')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
                                     Mua vé ngay
                                 </button>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Match 2 -->
-                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="chelsea arsenal">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 bg-red-600 rounded-full"></div>
-                                <span class="text-sm font-medium text-gray-600">Premier League</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-900">18:30</div>
-                                <div class="text-sm text-gray-500">GMT+7</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-4">
-                                <div class="team-logo w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    CHE
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Chelsea</div>
-                                    <div class="text-sm text-gray-500">#5 Premier League</div>
-                                </div>
-                            </div>
-
-                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
-
-                            <div class="flex items-center space-x-4">
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Arsenal</div>
-                                    <div class="text-sm text-gray-500">#2 Premier League</div>
-                                </div>
-                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    ARS
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t pt-4">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-700">Stamford Bridge</span>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <span class="status-badge px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">Sắp hết vé</span>
-                                        <span class="text-sm text-gray-600">Từ 1,500,000₫</span>
-                                    </div>
-                                </div>
-                                <button onclick="buyTicket('CHE vs ARS')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
-                                    Mua vé ngay
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Match 3 -->
-                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="manchester-city tottenham">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 bg-red-600 rounded-full"></div>
-                                <span class="text-sm font-medium text-gray-600">Premier League</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-900">16:00</div>
-                                <div class="text-sm text-gray-500">GMT+7</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-4">
-                                <div class="team-logo w-12 h-12 bg-sky-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    MCI
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Manchester City</div>
-                                    <div class="text-sm text-gray-500">#4 Premier League</div>
-                                </div>
-                            </div>
-
-                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
-
-                            <div class="flex items-center space-x-4">
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Tottenham</div>
-                                    <div class="text-sm text-gray-500">#7 Premier League</div>
-                                </div>
-                                <div class="team-logo w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-700 font-bold text-sm">
-                                    TOT
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t pt-4">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-700">Etihad Stadium</span>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
-                                        <span class="text-sm text-gray-600">Từ 1,100,000₫</span>
-                                    </div>
-                                </div>
-                                <button onclick="buyTicket('MCI vs TOT')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
-                                    Mua vé ngay
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
+        </main>
 
-            <!-- December 18, 2024 -->
-            <div class="date-section mb-8" data-date="2024-12-18" data-league="champions-league">
-                <div class="date-header rounded-t-xl px-6 py-4 mb-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2 class="text-2xl font-bold">Thứ tư, 18 tháng 12, 2024</h2>
-                            <p class="text-gray-300">2 trận đấu</p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-300">Champions League</div>
-                            <div class="text-lg font-bold">Vòng bảng</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calendar-grid">
-                    <!-- Champions League Match 1 -->
-                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="real-madrid barcelona">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 bg-blue-800 rounded-full"></div>
-                                <span class="text-sm font-medium text-gray-600">Champions League</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-900">03:00</div>
-                                <div class="text-sm text-gray-500">GMT+7</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-4">
-                                <div class="team-logo w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-700 font-bold text-sm">
-                                    RM
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Real Madrid</div>
-                                    <div class="text-sm text-gray-500">Bảng A</div>
-                                </div>
-                            </div>
-
-                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
-
-                            <div class="flex items-center space-x-4">
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Barcelona</div>
-                                    <div class="text-sm text-gray-500">Bảng A</div>
-                                </div>
-                                <div class="team-logo w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    BAR
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t pt-4">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-700">Santiago Bernabéu</span>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <span class="status-badge px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full">Hết vé</span>
-                                        <span class="text-sm text-gray-600">Từ 2,500,000₫</span>
-                                    </div>
-                                </div>
-                                <button disabled class="bg-gray-400 text-white px-6 py-3 rounded-lg font-bold cursor-not-allowed">
-                                    Hết vé
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Champions League Match 2 -->
-                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="bayern-munich psg">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 bg-blue-800 rounded-full"></div>
-                                <span class="text-sm font-medium text-gray-600">Champions League</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-900">03:00</div>
-                                <div class="text-sm text-gray-500">GMT+7</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-4">
-                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    BAY
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Bayern Munich</div>
-                                    <div class="text-sm text-gray-500">Bảng B</div>
-                                </div>
-                            </div>
-
-                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
-
-                            <div class="flex items-center space-x-4">
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">PSG</div>
-                                    <div class="text-sm text-gray-500">Bảng B</div>
-                                </div>
-                                <div class="team-logo w-12 h-12 bg-blue-800 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    PSG
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t pt-4">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-700">Allianz Arena</span>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
-                                        <span class="text-sm text-gray-600">Từ 2,200,000₫</span>
-                                    </div>
-                                </div>
-                                <button onclick="buyTicket('BAY vs PSG')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
-                                    Mua vé ngay
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- December 22, 2024 -->
-            <div class="date-section mb-8" data-date="2024-12-22" data-league="la-liga">
-                <div class="date-header rounded-t-xl px-6 py-4 mb-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2 class="text-2xl font-bold">Chủ nhật, 22 tháng 12, 2024</h2>
-                            <p class="text-gray-300">2 trận đấu</p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-300">La Liga</div>
-                            <div class="text-lg font-bold">Vòng 17</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calendar-grid">
-                    <!-- La Liga Match 1 -->
-                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="atletico-madrid sevilla">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 bg-orange-500 rounded-full"></div>
-                                <span class="text-sm font-medium text-gray-600">La Liga</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-900">22:00</div>
-                                <div class="text-sm text-gray-500">GMT+7</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-4">
-                                <div class="team-logo w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    ATM
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Atlético Madrid</div>
-                                    <div class="text-sm text-gray-500">#4 La Liga</div>
-                                </div>
-                            </div>
-
-                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
-
-                            <div class="flex items-center space-x-4">
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Sevilla</div>
-                                    <div class="text-sm text-gray-500">#8 La Liga</div>
-                                </div>
-                                <div class="team-logo w-12 h-12 bg-white border-2 border-red-600 rounded-full flex items-center justify-center text-red-600 font-bold text-sm">
-                                    SEV
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t pt-4">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-700">Wanda Metropolitano</span>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <span class="status-badge px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">Còn vé</span>
-                                        <span class="text-sm text-gray-600">Từ 1,800,000₫</span>
-                                    </div>
-                                </div>
-                                <button onclick="buyTicket('ATM vs SEV')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
-                                    Mua vé ngay
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- La Liga Match 2 -->
-                    <div class="match-card bg-white rounded-xl shadow-lg p-6" data-teams="valencia villarreal">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 bg-orange-500 rounded-full"></div>
-                                <span class="text-sm font-medium text-gray-600">La Liga</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-bold text-gray-900">19:30</div>
-                                <div class="text-sm text-gray-500">GMT+7</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-4">
-                                <div class="team-logo w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    VAL
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Valencia</div>
-                                    <div class="text-sm text-gray-500">#12 La Liga</div>
-                                </div>
-                            </div>
-
-                            <div class="vs-animation text-2xl font-bold text-gray-400 mx-4">VS</div>
-
-                            <div class="flex items-center space-x-4">
-                                <div class="text-center">
-                                    <div class="font-bold text-gray-900">Villarreal</div>
-                                    <div class="text-sm text-gray-500">#6 La Liga</div>
-                                </div>
-                                <div class="team-logo w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                    VIL
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t pt-4">
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-700">Mestalla</span>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <span class="status-badge px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">Sắp hết vé</span>
-                                        <span class="text-sm text-gray-600">Từ 900,000₫</span>
-                                    </div>
-                                </div>
-                                <button onclick="buyTicket('VAL vs VIL')" class="btn-primary text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg">
-                                    Mua vé ngay
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Load More Button -->
         <div class="text-center mt-12">

@@ -1,11 +1,15 @@
-﻿using System.Diagnostics;
-using BTL_WebProgramming.Models;
+﻿using BTL_WebProgramming.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Diagnostics;
 
 namespace BTL_WebProgramming.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly string connectionString =
+          "Data Source=localhost;Initial Catalog=TicketBall;Integrated Security=True;TrustServerCertificate=True";
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -26,9 +30,20 @@ namespace BTL_WebProgramming.Controllers
         {
             return View();
         }
+
         public IActionResult LichThiDau()
         {
-            return View();
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"SELECT MaTranDau, DoiChuNha, DoiKhach, NgayThiDau, MaSVD, GiaVe 
+                               FROM TranDau
+                               ORDER BY NgayThiDau ASC";
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                da.Fill(dt);
+            }
+
+            return View(dt);
         }
         public IActionResult MuaVe()
         {
