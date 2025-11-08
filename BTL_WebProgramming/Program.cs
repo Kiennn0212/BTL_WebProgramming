@@ -33,7 +33,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Main}/{id?}")
+    pattern: "{controller=Auth}/{action=DangNhap}/{id?}")
     .WithStaticAssets();
 
 app.UseSession();
